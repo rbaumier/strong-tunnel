@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/Artistic-2.0
 
 var tunnel = require('./lib/tunnel');
-var urlFmt = require('url').format;
-var urlParse = require('url').parse;
+var libUrl = require('url');
 
 module.exports = fromUrl;
 
@@ -16,13 +15,10 @@ function fromUrl(url, opts, callback) {
   }
   opts = opts || {};
 
-  var str = JSON.parse(JSON.stringify(url));
-  var obj = str;
+  var obj = JSON.parse(JSON.stringify(url));
 
-  if (typeof str === 'object') {
-    str = urlFmt(str);
-  } else if (typeof obj === 'string') {
-    obj = urlParse(obj);
+  if (typeof obj === 'string') {
+    obj = parseUrl(obj);
   }
 
   if (/\+ssh:$/.test(obj.protocol)) {
@@ -31,9 +27,29 @@ function fromUrl(url, opts, callback) {
     // $hostname:$port for $host
     delete obj.host;
     tunnel(obj, opts, function(err, urlObj) {
-      callback(err, urlFmt(urlObj));
+      if(err) {
+        return callback(err);
+      }
+      formatUrl(urlObj, callback);
     });
   } else {
     setImmediate(callback, null, url);
   }
+}
+
+function libUrlWrapper(fn, url, callback) {
+  try {
+    var convertedUrl = fn(url);
+    return callback ? callback(null, convertedUrl) : convertedUrl;
+  } catch (error) {
+    return callback ? callback(error) : error;
+  }
+}
+
+function formatUrl(url, callback) {
+  return libUrlWrapper(libUrl.format, url, callback);
+}
+
+function parseUrl(url, callback) {
+  return libUrlWrapper(libUrl.parse, url, callback);
 }
