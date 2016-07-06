@@ -21,20 +21,17 @@ function fromUrl(url, opts, callback) {
     obj = parseUrl(obj);
   }
 
-  if (/\+ssh:$/.test(obj.protocol)) {
-    obj.protocol = obj.protocol.replace(/\+ssh:$/, ':');
-    // we've replaced the port, so delete host so URL is recomposed using
-    // $hostname:$port for $host
-    delete obj.host;
-    tunnel(obj, opts, function(err, urlObj) {
-      if(err) {
-        return callback(err);
-      }
-      formatUrl(urlObj, callback);
-    });
-  } else {
-    setImmediate(callback, null, url);
-  }
+  obj.protocol = obj.protocol.replace(/\+ssh:$/, ':');
+  // we've replaced the port, so delete host so URL is recomposed using
+
+  // $hostname:$port for $host
+  delete obj.host;
+  tunnel(obj, opts, function(err, urlObj) {
+    if (err) {
+      return callback(err);
+    }
+    formatUrl(urlObj, callback);
+  });
 }
 
 function libUrlWrapper(fn, url, callback) {

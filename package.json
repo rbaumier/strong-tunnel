@@ -1,6 +1,6 @@
 {
   "name": "rb-strong-tunnel",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Semi-transparent wrapper for arbitrary network connections over ssh2",
   "main": "index.js",
   "scripts": {
