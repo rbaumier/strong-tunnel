@@ -21,7 +21,7 @@ function fromUrl(url, opts, callback) {
     obj = parseUrl(obj);
   }
 
-  obj.protocol = obj.protocol.replace(/\+ssh:$/, ':');
+  obj.protocol = ':'
   // we've replaced the port, so delete host so URL is recomposed using
 
   // $hostname:$port for $host
