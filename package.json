@@ -1,38 +1,27 @@
 {
-  "name": "rb-strong-tunnel",
-  "version": "1.2.3",
-  "description": "Semi-transparent wrapper for arbitrary network connections over ssh2",
+  "name": "strong-tunnel",
+  "version": "1.0.0",
+  "description": "Easy tunnelling over ssh2.",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "ssh2": "^0.5.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  },
   "scripts": {
-    "lint": "eslint . && jscs .",
-    "pretest": "eslint . && jscs .",
-    "test": "tap --coverage --coverage-report=cobertura test/test-*.js"
+    "test": "mocha lib/*.test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:strongloop/strong-tunnel.git"
+    "url": "git+https://github.com/rbaumier/strong-tunnel.git"
   },
-  "keywords": [
-    "ssh2",
-    "tunnel",
-    "proxy",
-    "tcp",
-    "socket",
-    "url"
-  ],
-  "author": "StrongLoop <callback@strongloop.com>",
-  "license": "Artistic-2.0",
-  "bugs": {
-    "url": "https://github.com/strongloop/strong-tunnel/issues"
-  },
-  "homepage": "https://github.com/strongloop/strong-tunnel",
-  "devDependencies": {
-    "buffer-equal-constant-time": "^1.0.1",
-    "eslint": "^0.18.0",
-    "jscs": "^1.11.3",
-    "tap": "^1.3.2"
-  },
-  "dependencies": {
-    "ssh2": "^0.4.4"
-  }
+  "author": "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com/)",
+  "contributors":["RBaumier <romain@redsmin.com>"],
+  "license": "Redsmin"
 }

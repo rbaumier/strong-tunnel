@@ -3,31 +3,26 @@
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
 
-var urlWrapper = require('./urlWrapper');
-var tunnel = require('./lib/tunnel')(urlWrapper);
+const urlWrapper = require('./urlWrapper');
+const tunnel = require('./lib/tunnel')(urlWrapper);
 
-module.exports = function fromUrl(url, opts, callback) {
-  if (callback === undefined && typeof opts === 'function') {
-    callback = opts;
-    opts = {};
-  }
+/**
+ * [exports description]
+ * @param  {string}   host     e.g. "domainname:port"
+ * @param  {object}   opts
+ * @param  {Function} f(err, {url:, sshClient:, localServer:})
+ * @param  {Function} socketErrorCallback(err)
+ * @return {[type]}
+ */
+module.exports = function fromUrl(host, opts, f, socketErrorCallback) {
+
   opts = opts || {};
 
-  var obj = JSON.parse(JSON.stringify(url));
-
-  if (typeof obj === 'string') {
-    obj = urlWrapper.parse(obj);
-  }
-
-  obj.protocol = ':'
-  // we've replaced the port, so delete host so URL is recomposed using
-
-  // $hostname:$port for $host
+  const obj = urlWrapper.parse(host);
+  obj.protocol = ':';
+    // we've replaced the port, so delete host so URL is recomposed using
+    // $hostname:$port for $host
   delete obj.host;
-  tunnel(obj, opts, function(err, connection) {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, connection);
-  });
+
+  tunnel(obj, opts, f, socketErrorCallback);
 }
